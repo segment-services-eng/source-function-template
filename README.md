@@ -46,7 +46,7 @@
 2. Push changes to your branch
 3. Add the label `!!_RELEASE_TO_QA` to the PR to deploy it to QA
    - (ensure a `QA` GitHub Environment has been created)
-4. If ready to deploy to PROD, uncomment the PROD section from the `deployFunction.yml.yml`
+4. If ready to deploy to PROD, uncomment the PROD section from the `deployFunction.yml`
    file & merge the PR (ensure a `PROD` GitHub Environment has been created)
 
 ## Tooling Included
