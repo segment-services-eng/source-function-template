@@ -12,4 +12,12 @@ module.exports = async function () {
       this.name = this.constructor.name;
     }
   };
+  globalThis.Segment = {
+    track() {},
+    identify() {},
+    page() {},
+    group() {},
+    screen() {},
+    set() {}
+  };
 };

@@ -1,12 +1,15 @@
 # Source Function Template
-> Base template to deploy your next destination function with
 
-1. Click `Use This Template` above (If Segment PS, add to `Segment Services Engineering` Organization
+> Base template to deploy your next source function
+
+1. Click `Use This Template` above
+
+- (If Segment PS, add to `Segment Services Engineering` Organization
 
 ## Setup Steps
 
 1. `nvm use` (to get the right version of NodeJS)
-   - As of 2023/02/22, Segment Source & Destination Functions require NodeJS 14.19.3
+   - As of 2023/02/22, Segment Functions require NodeJS 14.19.3
    - [If needed, install `nvm`](https://github.com/nvm-sh/nvm#install--update-script)
 2. `npm install` (to install npm dependencies)
 
@@ -19,8 +22,11 @@
 
 ## To Deploy via GitHub Actions
 
-1. Create GitHub Environments in `Settings` → `Environments` → `DEV` (repeat for `QA` & `PROD`)
-   - _`DEV` is enabled by default in the `.github/workflows/deployDestinationFunction.yml` file_
+1. Create GitHub Environments in `Settings` → `Environments` → `DEV`
+
+   - _`DEV` is enabled by default in the `.github/workflows/deployFunction.yml` file_
+   - (repeat for `QA` & `PROD`)
+
 2. Create Source Function in Segment Workspace
 3. Connect Source Function to a Segment Source
 4. Create Public API Token to allow for deploying
@@ -31,14 +37,17 @@
    - `SOURCE_ID` (available in the Source Settings → API Keys tab)
      - ![2023-09-11_17-14-05](https://github.com/segment-services-eng/source-function-template/assets/7215306/043e6ab3-a454-4232-b06c-72f689411d31)
    - `PUBLIC_API_TOKEN` ([Get an API Token](https://segment.com/docs/api/public-api/#config-api-vs-public-api))
-![DEV Environment Secrets](https://github.com/segment-services-eng/source-function-template/assets/7215306/2e4b1207-7dca-4683-9c58-8cf4906824bf)
+     ![DEV Environment Secrets](https://github.com/segment-services-eng/source-function-template/assets/7215306/2e4b1207-7dca-4683-9c58-8cf4906824bf)
 
 ## Deploying to multiple environments
 
-1. Once changes look good in the DEV environment, uncomment the QA section from the `deployDestinationFunction.yml` file.
+1. Once changes look good in the DEV environment, uncomment the QA section from
+   the `deployFunction.yml` file.
 2. Push changes to your branch
-3. Add the label `!!_RELEASE_TO_QA` to the PR to deploy it to QA (ensure a `QA` GitHub Environment has been created)
-4. If ready to deploy to PROD, uncomment the PROD section from the `deployDestinationFunction.yml` file & merge the PR (ensure a `PROD` GitHub Environment has been created)
+3. Add the label `!!_RELEASE_TO_QA` to the PR to deploy it to QA
+   - (ensure a `QA` GitHub Environment has been created)
+4. If ready to deploy to PROD, uncomment the PROD section from the `deployFunction.yml.yml`
+   file & merge the PR (ensure a `PROD` GitHub Environment has been created)
 
 ## Tooling Included
 

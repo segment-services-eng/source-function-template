@@ -1,16 +1,16 @@
-const fs = require("fs");
-const path = require("path");
-const vm = require("vm");
+const fs = require('fs');
+const path = require('path');
+const vm = require('vm');
 const { GITHUB_JOB, FUNCTION_ID, SOURCE_ID, PUBLIC_API_TOKEN } = process.env;
 
 /**
  * Implement Fetch w/ Retries
  */
-const nodeFetch = require("node-fetch");
-const fetch = require("fetch-retry")(nodeFetch);
+const nodeFetch = require('node-fetch');
+const fetch = require('fetch-retry')(nodeFetch);
 const fetchRetryOptions = {
   retries: 12,
-  retryDelay: (attempt) => Math.pow(2, attempt) * 1000, // 1000, 2000, 4000
+  retryDelay: attempt => Math.pow(2, attempt) * 1000, // 1000, 2000, 4000
   retryOn: (attempt, error, response) => {
     const { status, statusText } = response;
     // retry on any network error, or 4xx or 5xx status codes
@@ -18,16 +18,17 @@ const fetchRetryOptions = {
       console.log(`Response ${status} ${statusText}. Retry, ${attempt + 1}/12`);
       return true;
     }
-  },
+  }
 };
 
 async function run() {
   const functionCode = fs.readFileSync(
-    path.resolve("./src", "index.js"),
-    "utf8"
+    path.resolve('./src', 'index.js'),
+    'utf8'
   );
   const code = `/**
  * Output from GITHUB ${GITHUB_JOB} Environment
+ * - Deploy Timestamp: ${new Date().toISOString()}
  */
   
 ${functionCode}
@@ -38,7 +39,7 @@ ${functionCode}
   try {
     new vm.Script(code);
   } catch (error) {
-    throw new Error("JavaScript Is Not Valid, Exiting", error);
+    throw new Error('JavaScript Is Not Valid, Exiting', error);
   }
   /**
    * Update to Function
@@ -47,15 +48,15 @@ ${functionCode}
   try {
     const headers = {
       Authorization: `Bearer ${PUBLIC_API_TOKEN}`,
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json'
     };
     const response = await fetch(
       `https://api.segmentapis.com/functions/${FUNCTION_ID}`,
       {
-        method: "PATCH",
+        method: 'PATCH',
         headers,
         body: JSON.stringify({ code }),
-        ...fetchRetryOptions,
+        ...fetchRetryOptions
       }
     );
     console.log(`Response: ${response.status} ${response.statusText}`);
@@ -84,15 +85,15 @@ ${functionCode}
   try {
     const headers = {
       Authorization: `Bearer ${PUBLIC_API_TOKEN}`,
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json'
     };
     const response = await fetch(
       `https://api.segmentapis.com/functions/${SOURCE_ID}/deploy`,
       {
-        method: "POST",
+        method: 'POST',
         headers,
         //body: JSON.stringify({ code }),
-        ...fetchRetryOptions,
+        ...fetchRetryOptions
       }
     );
     console.log(`Response: ${response.status} ${response.statusText}`);
@@ -103,7 +104,7 @@ ${functionCode}
         console.log(result);
         throw new Error(result.errors);
       }
-      if (result.data.functionDeployment.status === "SUCCESS") {
+      if (result.data.functionDeployment.status === 'SUCCESS') {
         //might need to change this
         const { status } = result.data.functionDeployment.status;
         console.log(`Successfully Pushed to Source ID With Status: ${status}`);

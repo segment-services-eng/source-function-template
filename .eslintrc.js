@@ -11,6 +11,7 @@ module.exports = {
   },
   globals: {
     RetryError: 'readonly',
+    Segment: 'readonly',
     _: 'readonly',
     jsonwebtoken: 'readonly',
     cache: 'readonly',

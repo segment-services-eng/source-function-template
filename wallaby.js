@@ -13,6 +13,14 @@ module.exports = function (wallaby) {
       const crypto = require('crypto');
       const fetch = require('jest-fetch-mock');
       fetch.enableMocks();
+      const Segment = {
+        track() {},
+        identify() {},
+        page() {},
+        group() {},
+        screen() {},
+        set() {}
+      };
     },
     trace: true
   };
