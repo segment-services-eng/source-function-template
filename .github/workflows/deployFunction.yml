@@ -1,4 +1,4 @@
-name: Deploy Destination Function
+name: Deploy Function
 on:
   pull_request:
     types: [opened, synchronize, labeled]
@@ -22,8 +22,8 @@ jobs:
         run: npm ci
       - name: Run tests
         run: npm test
-      - name: Deploy Destination Function
-        run: GITHUB_JOB=${{ github.job }} FUNCTION_ID=${{ secrets.FUNCTION_ID }} SOURCE_ID=${{ secrets.SOURCE_ID }} PUBLIC_API_TOKEN=${{ secrets.PUBLIC_API_TOKEN }} node ./scripts/deployDestinationFunction.js --unhandled-rejections=strict || { exit 1;}
+      - name: Deploy Function
+        run: GITHUB_JOB=${{ github.job }} FUNCTION_ID=${{ secrets.FUNCTION_ID }} SOURCE_ID=${{ secrets.SOURCE_ID }} PUBLIC_API_TOKEN=${{ secrets.PUBLIC_API_TOKEN }} node ./scripts/deployFunction.js --unhandled-rejections=strict || { exit 1;}
 #   QA:
 #     runs-on: ubuntu-latest
 #     if: github.event.label.name == '!!_RELEASE_TO_QA'
@@ -37,8 +37,8 @@ jobs:
 #         run: npm ci
 #       - name: Run tests
 #         run: npm test
-#       - name: Deploy Destination Function
-#         run: GITHUB_JOB=${{ github.job }} FUNCTION_ID=${{ secrets.FUNCTION_ID }} SOURCE_ID=${{ secrets.SOURCE_ID }} PUBLIC_API_TOKEN=${{ secrets.PUBLIC_API_TOKEN }} node ./scripts/deployDestinationFunction.js --unhandled-rejections=strict || { exit 1;}
+#       - name: Deploy Function
+#         run: GITHUB_JOB=${{ github.job }} FUNCTION_ID=${{ secrets.FUNCTION_ID }} SOURCE_ID=${{ secrets.SOURCE_ID }} PUBLIC_API_TOKEN=${{ secrets.PUBLIC_API_TOKEN }} node ./scripts/deployFunction.js --unhandled-rejections=strict || { exit 1;}
 #   PROD:
 #     runs-on: ubuntu-latest
 #     if: github.ref == 'refs/heads/main'
@@ -52,5 +52,5 @@ jobs:
 #         run: npm ci
 #       - name: Run tests
 #         run: npm test
-#       - name: Deploy Destination Function
-#         run: GITHUB_JOB=${{ github.job }} FUNCTION_ID=${{ secrets.FUNCTION_ID }} SOURCE_ID=${{ secrets.SOURCE_ID }} PUBLIC_API_TOKEN=${{ secrets.PUBLIC_API_TOKEN }} node ./scripts/deployDestinationFunction.js --unhandled-rejections=strict || { exit 1;}
+#       - name: Deploy Function
+#         run: GITHUB_JOB=${{ github.job }} FUNCTION_ID=${{ secrets.FUNCTION_ID }} SOURCE_ID=${{ secrets.SOURCE_ID }} PUBLIC_API_TOKEN=${{ secrets.PUBLIC_API_TOKEN }} node ./scripts/deployFunction.js --unhandled-rejections=strict || { exit 1;}
