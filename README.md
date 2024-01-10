@@ -1,3 +1,4 @@
+![Segment_Functions](https://github.com/segment-services-eng/source-function-template/assets/7215306/869b8090-9c1d-457e-b52b-4c6b81ff34c4)
 # Source Function Template
 
 > Base template to deploy your next source function
