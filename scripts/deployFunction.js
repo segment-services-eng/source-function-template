@@ -33,6 +33,7 @@ async function run() {
   
 ${functionCode}
   `;
+
   /**
    * Ensure `code` is valid JavaScript
    */
@@ -92,7 +93,6 @@ ${functionCode}
       {
         method: 'POST',
         headers,
-        //body: JSON.stringify({ code }),
         ...fetchRetryOptions
       }
     );
@@ -105,9 +105,10 @@ ${functionCode}
         throw new Error(result.errors);
       }
       if (result.data.functionDeployment.status === 'SUCCESS') {
-        //might need to change this
-        const { status } = result.data.functionDeployment.status;
+        const { status } = result.data.functionDeployment;
         console.log(`Successfully Pushed to Source ID With Status: ${status}`);
+      } else {
+        process.exit(1);
       }
     } else {
       throw new Error(`Error: ${response.status} ${response.statusText}`);
@@ -116,4 +117,5 @@ ${functionCode}
     throw new Error(error);
   }
 }
+
 run();
