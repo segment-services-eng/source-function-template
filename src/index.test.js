@@ -52,8 +52,32 @@ describe('onRequest', () => {
      * Expect `Segment` methods to have been called
      */
     expect(Segment.identify).toHaveBeenCalledTimes(1);
-    expect(Segment.track).toHaveBeenCalledTimes(1);
-    expect(Segment.track).toHaveBeenCalledTimes(1);
-    expect(Segment.track).toHaveBeenCalledTimes(1);
+    expect(Segment.group).toHaveBeenCalledTimes(1);
+    expect(Segment.page).toHaveBeenCalledTimes(1);
+    expect(Segment.screen).toHaveBeenCalledTimes(1);
+  });
+
+  it('should throw RetryError on fetch connection error', async () => {
+    fetch.mockRejectOnce(new Error('Network failure'));
+
+    await expect(onRequest(baseRequest, baseSettings)).rejects.toThrow(
+      'Network failure'
+    );
+  });
+
+  it('should throw RetryError on 500 server error', async () => {
+    fetch.mockResponseOnce('', { status: 500 });
+
+    await expect(onRequest(baseRequest, baseSettings)).rejects.toThrow(
+      'Failed with 500'
+    );
+  });
+
+  it('should throw RetryError on 429 rate limit', async () => {
+    fetch.mockResponseOnce('', { status: 429 });
+
+    await expect(onRequest(baseRequest, baseSettings)).rejects.toThrow(
+      'Failed with 429'
+    );
   });
 });

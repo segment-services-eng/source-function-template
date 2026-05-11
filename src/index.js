@@ -90,11 +90,8 @@ async function onRequest(request, settings) {
 /**
  * Exports for Testing Only
  */
-try {
-  if (process?.env['NODE_DEV'] === 'TEST') {
-    module.exports = {
-      onRequest
-    };
-  }
-  // eslint-disable-next-line no-empty
-} catch (e) {}
+if (typeof process !== 'undefined' && process.env['NODE_DEV'] === 'TEST') {
+  module.exports = {
+    onRequest
+  };
+}

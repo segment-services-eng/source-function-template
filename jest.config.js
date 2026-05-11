@@ -24,7 +24,17 @@ module.exports = {
 
   // The directory where Jest should output its coverage files
   coverageDirectory: 'coverage',
-  // coverageThreshold: { global: { lines: 75 } },
+
+  // An object that configures minimum threshold enforcement for coverage results
+  coverageThreshold: {
+    global: {
+      branches: 100,
+      functions: 100,
+      lines: 100,
+      statements: 100
+    }
+  },
+
   // An array of regexp pattern strings used to skip coverage collection
   // coveragePathIgnorePatterns: [
   //   "/node_modules/"
@@ -40,9 +50,6 @@ module.exports = {
   //   "lcov",
   //   "clover"
   // ],
-
-  // An object that configures minimum threshold enforcement for coverage results
-  // coverageThreshold: undefined,
 
   // A path to a custom dependency extractor
   // dependencyExtractor: undefined,
