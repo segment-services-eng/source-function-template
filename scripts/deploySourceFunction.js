@@ -19,7 +19,9 @@ const { DEPLOY_ENV, GITHUB_JOB, FUNCTION_ID, SOURCE_ID, PUBLIC_API_TOKEN } =
 // containing `*/`) from breaking out of the comment and injecting code.
 const ALLOWED_ENVS = ['DEV', 'QA', 'PROD'];
 const rawDeployEnv = DEPLOY_ENV || GITHUB_JOB || 'UNKNOWN';
-const deployEnv = ALLOWED_ENVS.includes(rawDeployEnv) ? rawDeployEnv : 'UNKNOWN';
+const deployEnv = ALLOWED_ENVS.includes(rawDeployEnv)
+  ? rawDeployEnv
+  : 'UNKNOWN';
 
 async function run() {
   const functionCode = fs.readFileSync(
