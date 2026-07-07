@@ -24,7 +24,7 @@ jobs:
       - name: Run tests
         run: npm test
       - name: Deploy Function
-        run: GITHUB_JOB=${{ github.job }} FUNCTION_ID=${{ secrets.FUNCTION_ID }} SOURCE_ID=${{ secrets.SOURCE_ID }} PUBLIC_API_TOKEN=${{ secrets.PUBLIC_API_TOKEN }} node ./scripts/deployFunction.js --unhandled-rejections=strict || { exit 1;}
+        run: GITHUB_JOB=${{ github.job }} FUNCTION_ID=${{ secrets.FUNCTION_ID }} SOURCE_ID=${{ secrets.SOURCE_ID }} PUBLIC_API_TOKEN=${{ secrets.PUBLIC_API_TOKEN }} node ./scripts/deploySourceFunction.js --unhandled-rejections=strict || { exit 1;}
   QA:
     runs-on: ubuntu-latest
     if: github.event.label.name == '!!_RELEASE_TO_QA'
@@ -41,7 +41,7 @@ jobs:
       - name: Run tests
         run: npm test
       - name: Deploy Function
-        run: GITHUB_JOB=${{ github.job }} FUNCTION_ID=${{ secrets.FUNCTION_ID }} SOURCE_ID=${{ secrets.SOURCE_ID }} PUBLIC_API_TOKEN=${{ secrets.PUBLIC_API_TOKEN }} node ./scripts/deployFunction.js --unhandled-rejections=strict || { exit 1;}
+        run: GITHUB_JOB=${{ github.job }} FUNCTION_ID=${{ secrets.FUNCTION_ID }} SOURCE_ID=${{ secrets.SOURCE_ID }} PUBLIC_API_TOKEN=${{ secrets.PUBLIC_API_TOKEN }} node ./scripts/deploySourceFunction.js --unhandled-rejections=strict || { exit 1;}
   PROD:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
@@ -56,4 +56,4 @@ jobs:
       - name: Run tests
         run: npm test
       - name: Deploy Function
-        run: GITHUB_JOB=${{ github.job }} FUNCTION_ID=${{ secrets.FUNCTION_ID }} SOURCE_ID=${{ secrets.SOURCE_ID }} PUBLIC_API_TOKEN=${{ secrets.PUBLIC_API_TOKEN }} node ./scripts/deployFunction.js --unhandled-rejections=strict || { exit 1;}
+        run: GITHUB_JOB=${{ github.job }} FUNCTION_ID=${{ secrets.FUNCTION_ID }} SOURCE_ID=${{ secrets.SOURCE_ID }} PUBLIC_API_TOKEN=${{ secrets.PUBLIC_API_TOKEN }} node ./scripts/deploySourceFunction.js --unhandled-rejections=strict || { exit 1;}

@@ -44,7 +44,7 @@ confusing `400 / "provide a valid Source function instance ID"` errors.
 
 ### How the deploy uses them
 
-`scripts/deployFunction.js` does two API calls per run:
+`scripts/deploySourceFunction.js` does two API calls per run:
 
 1. **Push code** — `PATCH https://api.segmentapis.com/functions/{FUNCTION_ID}`
    with the contents of `src/index.js`. Uses the **`sfnc_`** id.
@@ -92,8 +92,8 @@ distinguishable.
 
 This is the **out-of-the-box** deploy path — if you used this template, this is
 what works with no extra infrastructure. The workflow is defined in
-[`.github/workflows/deployFunction.yml`](.github/workflows/deployFunction.yml);
-it installs dependencies, runs tests, then deploys via `scripts/deployFunction.js`.
+[`.github/workflows/deploySourceFunction.yml`](.github/workflows/deploySourceFunction.yml);
+it installs dependencies, runs tests, then deploys via `scripts/deploySourceFunction.js`.
 
 1. Create GitHub Environments in `Settings` → `Environments` → `DEV`
    (repeat for `QA` & `PROD`). `DEV` is enabled by default in the workflow;
@@ -115,7 +115,7 @@ To promote: add the `!!_RELEASE_TO_QA` label to the PR to deploy to QA; merge to
 Inside Twilio we deploy through Buildkite instead of GitHub-hosted runners. The
 pipeline is defined in [`.buildkite/pipeline.yml`](.buildkite/pipeline.yml);
 each environment step installs dependencies, runs tests, then deploys via the
-same `scripts/deployFunction.js`.
+same `scripts/deploySourceFunction.js`.
 
 1. Create a Buildkite pipeline pointed at this repo (GitHub webhook + a queue
    with connected agents). On the `twilio-primary-default` cluster, use a live

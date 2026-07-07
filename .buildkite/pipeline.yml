@@ -1,6 +1,6 @@
 # Buildkite pipeline for deploying the source-function-template Segment
 # Source Function. (Internal Twilio path; external template users deploy via
-# .github/workflows/deployFunction.yml instead.)
+# .github/workflows/deploySourceFunction.yml instead.)
 #
 # Environments (mirrors the destination-function-template release procedure):
 #   * DEV  — runs on feature-branch builds (not main).
@@ -55,7 +55,7 @@ steps:
         -e SOURCE_ID \
         -e PUBLIC_API_TOKEN \
         registry.twilio.com/library/base-node/22:22 \
-        sh -c 'npm ci --no-audit --no-fund --loglevel=error && npm test && node ./scripts/deployFunction.js --unhandled-rejections=strict'
+        sh -c 'npm ci --no-audit --no-fund --loglevel=error && npm test && node ./scripts/deploySourceFunction.js --unhandled-rejections=strict'
 
   - label: ':rocket: QA'
     key: QA
@@ -76,7 +76,7 @@ steps:
         -e SOURCE_ID \
         -e PUBLIC_API_TOKEN \
         registry.twilio.com/library/base-node/22:22 \
-        sh -c 'npm ci --no-audit --no-fund --loglevel=error && npm test && node ./scripts/deployFunction.js --unhandled-rejections=strict'
+        sh -c 'npm ci --no-audit --no-fund --loglevel=error && npm test && node ./scripts/deploySourceFunction.js --unhandled-rejections=strict'
 
   - label: ':rocket: PROD'
     key: PROD
@@ -97,4 +97,4 @@ steps:
         -e SOURCE_ID \
         -e PUBLIC_API_TOKEN \
         registry.twilio.com/library/base-node/22:22 \
-        sh -c 'npm ci --no-audit --no-fund --loglevel=error && npm test && node ./scripts/deployFunction.js --unhandled-rejections=strict'
+        sh -c 'npm ci --no-audit --no-fund --loglevel=error && npm test && node ./scripts/deploySourceFunction.js --unhandled-rejections=strict'
