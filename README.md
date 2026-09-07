@@ -22,6 +22,75 @@
 
 ---
 
+## Writing your function
+
+Segment runs `src/index.js` inside a sandboxed runtime, **not** in Node. There
+is no `require`, no `fs`, and no `process`. Instead the runtime injects a small
+set of globals:
+
+| Global | What it is |
+| --- | --- |
+| `request` | The incoming HTTP request. `request.json()` parses the body. |
+| `settings` | The function's configured settings (e.g. `settings.apiKey`), managed in the Segment UI on the function's **Settings** tab. |
+| `Segment` | The event emitter: `Segment.track()`, `.identify()`, `.group()`, `.page()`, `.screen()`, `.set()`. This is how a *source* function produces data. |
+| `RetryError` | Throw this to ask Segment to retry the invocation. Any other thrown error is a permanent failure. |
+| `fetch`, `btoa` | Available globally — no import needed. |
+
+Under Jest these globals are stubbed in [`setup.js`](setup.js), which is what
+lets `src/index.test.js` exercise the handler outside the real runtime.
+
+A minimal handler that calls an upstream API and emits one event:
+
+```js
+async function onRequest(request, settings) {
+  const body = request.json();
+
+  let response;
+  try {
+    response = await fetch('https://api.example.com/v1/events', {
+      method: 'POST',
+      headers: {
+        Authorization: `Basic ${btoa(settings.apiKey + ':')}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+  } catch (error) {
+    // Connection-level failure — worth retrying.
+    throw new RetryError(error.message);
+  }
+
+  if (response.status >= 500 || response.status === 429) {
+    // Retry on server errors and rate limits.
+    throw new RetryError(`Failed with ${response.status}`);
+  }
+
+  // `fetch` resolves to a Response, not to parsed JSON. You must await
+  // `.json()` before reading fields off the payload.
+  const payload = await response.json();
+
+  Segment.track({
+    event: 'Example Event',
+    userId: payload.userId,
+    properties: { source: 'example-api' }
+  });
+}
+```
+
+> ⚠️ **Gotcha in the shipped placeholder:** `src/index.js` reads
+> `response.propertyName` **without** first awaiting `response.json()`, so that
+> value is always `undefined`. Parse the body as shown above when you replace the
+> placeholder with your real function.
+
+### Why the file ends in a `try`/`catch`
+
+`src/index.js` exports `onRequest` only when `NODE_DEV === 'TEST'`, which
+`src/index.test.js` sets on its first line. The export block is wrapped in
+`try`/`catch` because the sandboxed runtime has no `process` at all — an
+unguarded `process.env` reference would throw on deploy.
+
+---
+
 ## Key concept: a source function has THREE ids
 
 Deploying a source function is a **two-call** operation against the Segment
