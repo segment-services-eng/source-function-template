@@ -24,7 +24,7 @@
 # Each step assumes the twilio-internal_source-function-template IAM role via
 # the agent.buildkite.com OIDC provider, then reads the secrets. The node runs
 # in Twilio's internal base-node image (Docker Hub is not reachable from the
-# agents; registry.twilio.com is). HUSKY=0 skips the git-hook install.
+# agents; registry.twilio.com is).
 #
 # `set -euo pipefail` + the chained `&&` make any failure (failed secret fetch,
 # test failure, deploy error) fail the step hard, so a broken build never
@@ -50,7 +50,6 @@ steps:
       docker run --rm \
         -v "$$PWD":/workdir -w /workdir \
         -e DEPLOY_ENV \
-        -e HUSKY=0 \
         -e FUNCTION_ID \
         -e SOURCE_ID \
         -e PUBLIC_API_TOKEN \
@@ -71,7 +70,6 @@ steps:
       docker run --rm \
         -v "$$PWD":/workdir -w /workdir \
         -e DEPLOY_ENV \
-        -e HUSKY=0 \
         -e FUNCTION_ID \
         -e SOURCE_ID \
         -e PUBLIC_API_TOKEN \
@@ -92,7 +90,6 @@ steps:
       docker run --rm \
         -v "$$PWD":/workdir -w /workdir \
         -e DEPLOY_ENV \
-        -e HUSKY=0 \
         -e FUNCTION_ID \
         -e SOURCE_ID \
         -e PUBLIC_API_TOKEN \
